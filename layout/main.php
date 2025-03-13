@@ -27,8 +27,8 @@
                 </div>
                 <ul class="navigation-options">
                     <li><a href="?page=dashboard.php">Dashboard</a></li>
-                    <li><a href="?page=orders.php">Orders</a></li>
                     <li><a href="?page=cart.php">Basket</a></li>
+                    <li><a href="?page=all_orders.php">Orders</a></li>
                     <?php
                         if ($_SESSION["user_type"] == "admin") {
                             echo '<li><a href="?page=product.php">Products</a></li>';
@@ -55,7 +55,7 @@
                 <?php
                     $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard.php';
 
-                    $pages = ['dashboard.php', 'orders.php', 'product.php', 'cart.php', 'edit_product.php', 'delete_product.php', 'edit_cart.php', 'delete_cart.php', 'orders.php', 'order_summary.php'];
+                    $pages = ['dashboard.php', 'orders.php', 'product.php', 'cart.php', 'edit_product.php', 'delete_product.php', 'edit_cart.php', 'delete_cart.php', 'orders.php', 'order_summary.php', 'all_orders.php'];
 
                     if (in_array($page, $pages)) {
                         include '../pages/' . $page;

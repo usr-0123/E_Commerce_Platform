@@ -30,22 +30,99 @@
     $stmt->bind_param("i", $order_id);
     $stmt->execute();
     $items_result = $stmt->get_result();
-
-    echo "<h2>Order Summary</h2>";
-    echo "<p>Order ID: " . $order['id'] . "</p>";
-    echo "<p>Name: " . $order['first_name'] . " " . $order['last_name'] . "</p>";
-    echo "<p>Total Price: Ksh. " . $order['total_price'] . "</p>";
-    echo "<p>Status: " . ucfirst($order['status']) . "</p>";
-    echo "<p>Placed on: " . $order['created_at'] . "</p>";
-
-    echo "<h3>Items</h3>";
-    echo "<table border='1'><tr><th>Product</th><th>Quantity</th><th>Price</th></tr>";
-    while ($item = $items_result->fetch_assoc()) {
-        echo "<tr><td>{$item['name']}</td><td>{$item['quantity']}</td><td>Ksh. {$item['price']}</td></tr>";
-    }
-    echo "</table>";
-
-    echo "<br><a href='../layout/main.php?page=orders.php'>View All Orders</a>";
-
-    $connect->close();
 ?>
+
+<style>
+    .order-section-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    .order-section-section {
+        background: white;
+        padding: 20px;
+        width: 100%;
+        max-width: 600px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    h2 {
+        color: #3498db;
+    }
+    .info {
+        margin-bottom: 15px;
+        font-size: 16px;
+        color: #555;
+    }
+    .highlight {
+        font-weight: bold;
+        color: #e67e22;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+    th, td {
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+    th {
+        background-color: #3498db;
+        color: white;
+    }
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+    .btn {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 10px 15px;
+        text-decoration: none;
+        color: white;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+    .btn-green {
+        background-color: #2ecc71;
+    }
+    .btn-blue {
+        background-color: #3498db;
+    }
+    .btn:hover {
+        opacity: 0.8;
+    }
+</style>
+
+<div class="order-section-container">
+    <section class="order-section-section">
+        <h2>Order Summary</h2>
+        <p class="info"><strong>Order ID:</strong> <span class="highlight"><?= $order['id'] ?></span></p>
+        <p class="info"><strong>Customer:</strong> <?= $order['first_name'] . " " . $order['last_name'] ?></p>
+        <p class="info"><strong>Total Price:</strong> <span class="highlight">Ksh. <?= number_format($order['total_price'], 2) ?></span></p>
+        <p class="info"><strong>Status:</strong> <?= ucfirst($order['status']) ?></p>
+        <p class="info"><strong>Placed on:</strong> <?= date("F j, Y, g:i a", strtotime($order['created_at'])) ?></p>
+
+        <h3>Ordered Items</h3>
+        <table>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price (Ksh)</th>
+            </tr>
+            <?php while ($item = $items_result->fetch_assoc()) { ?>
+                <tr>
+                    <td><?= $item['name'] ?></td>
+                    <td><?= $item['quantity'] ?></td>
+                    <td><?= number_format($item['price'], 2) ?></td>
+                </tr>
+            <?php } ?>
+        </table>
+
+        <a href="../layout/main.php?page=all_orders.php" class="btn btn-blue">View All Orders</a>
+    </section>
+</div>
+
+<?php $connect->close(); ?>
