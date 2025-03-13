@@ -1,5 +1,5 @@
 <?php
-    include '..\config\config.php';
+    include '..\config\database_connect.php';
 
     $database_name = 'ecommerce';
 
@@ -32,8 +32,6 @@
                 ('Laura', 'Martinez', 'laura.martinez@example.com', '$password_hash', 'admin')
         "
     ];
-
-//    $conn -> query('Delete from users');
 
     foreach ($insert_records as $table_name => $table_query) {
         insertUsers ($conn, $table_name, $table_query);
