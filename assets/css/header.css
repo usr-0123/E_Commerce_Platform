@@ -1,0 +1,10 @@
+.header-section {
+    background-color: red;
+    height: max-content;
+}
+
+.logout-click {
+    background-color: blue;
+    color: red;
+    text-decoration: none;
+}
