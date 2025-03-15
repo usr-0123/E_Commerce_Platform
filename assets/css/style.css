@@ -1,0 +1,19 @@
+root {
+    padding: 0;
+    margin: 0;
+}
+
+.index-body-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.main-content-section {
+    display: flex;
+    height: 100vh;
+    background-color: red;
+    top: 0;
+}
