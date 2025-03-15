@@ -77,8 +77,6 @@
 <section style="padding: 10px">
     <h2>Products</h2>
     <div style="display:flex; gap: 10px;">
-        <p id="products-count"></p>
-
         <!-- Category Filter -->
         <label for="products-sort" hidden="hidden"></label>
         <select id="products-sort" class="sort-products" onchange="filterProducts()">
@@ -128,14 +126,20 @@
             >
             <button onclick="filterProducts()" style="border: none; background-color: transparent">🔍</button>
         </label>
+
+        <?php
+            if ($_SESSION["user_type"] == "admin") {
+                echo '<button onclick="addProduct()">Add Product</button>';
+            }
+        ?>
     </div>
 
-    <div class="products-display" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; padding: 20px; margin: auto">
+    <div class="products-display" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; padding: 20px; margin: auto">
         <?php
         if ($result->num_rows > 0) {
             while ($item = $result->fetch_assoc()) {
                 echo "
-                    <div style='background: white; padding: 15px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: transform 0.2s; width: 20%;'>
+                    <div style='background: white; padding: 10px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: transform 0.2s; width: 20%;'>
                         <img src='{$item['image_url']}' alt='{$item['name']}' style='width: 100%; height: 50%; border-radius: 10px'>
                         <div class='product-info' style='padding: 10px 0;height: 50%;bottom: 0'>
                             <h2>{$item['name']}</h2>
@@ -185,7 +189,7 @@
         if (confirm("Are you sure you want to delete this product?")) {
             let form = document.createElement("form");
             form.method = "POST";
-            form.action = "../pages/delete_product.php?id="+productId; // Keep the PHP logic separate
+            form.action = "../pages/delete_product.php?id="+productId;
 
             let input = document.createElement("input");
             input.type = "hidden";
@@ -200,6 +204,10 @@
 
     function addToCart(productId, userId) {
         window.location.href = `../pages/add_to_cart.php?id=${productId}&user_id=${userId}`;
+    }
+
+    function addProduct() {
+        window.location.href = "?page=add_product.php";
     }
 
 </script>

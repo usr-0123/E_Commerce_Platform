@@ -32,6 +32,7 @@
             $error = "User with these details does not exist.";
         }
     }
+
 ?>
 
 <!DOCTYPE html>

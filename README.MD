@@ -82,7 +82,7 @@ ecommerce_project/
 |-pages
 |   |-dashboard.php          # Homepage
 |   |-shop.php          # Product listing page
-|   |-product.php       # Single product details page
+|   |-update_orders_status.php       # Single product details page
 |   |-cart.php          # Shopping cart page
 |   |-orders.php      # Checkout page
 |   |-orders.php        # Order history for users

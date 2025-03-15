@@ -10,13 +10,15 @@
         exit();
     }
 
+    $user_role = $_SESSION["user_type"];
+
     $user_id = $_SESSION["user_id"];
 
-    $orders_sql = "SELECT o.id, o.total_price, o.status, o.created_at, u.first_name, u.last_name 
-                   FROM orders o 
-                   JOIN users u ON o.user_id = u.id
-                   WHERE o.user_id = '$user_id'
-                   ORDER BY o.created_at DESC";
+    if ($user_role === "admin") {
+        $orders_sql = "SELECT o.id, o.total_price, o.status, o.created_at, u.first_name, u.last_name FROM orders o JOIN users u ON o.user_id = u.id ORDER BY o.created_at DESC";
+    } else {
+        $orders_sql = "SELECT o.id, o.total_price, o.status, o.created_at, u.first_name, u.last_name FROM orders o JOIN users u ON o.user_id = u.id WHERE o.user_id = '$user_id' ORDER BY o.created_at DESC";
+    }
 
     $orders = $connect->query($orders_sql);
 ?>
@@ -105,13 +107,17 @@
                     </td>
                     <td><?= date("F j, Y, g:i a", strtotime($order['created_at'])) ?></td>
                     <td>
-                        <a href="../layout/main.php?page=order_summary.php&order_id=<?= $order['id'] ?>" class="btn btn-blue">View</a>
-                        <?php if (strtolower($order['status']) == "pending") { ?>
                             <button onclick="cancelOrder(<?php echo $order['id']; ?>)"
                                     style="background: #e74c3c; color: white; padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer;">
                                 Cancel Order
                             </button>
-                        <?php } ?>
+                            <?php
+                                echo "<select id='newStatus' onchange=\"updateOrderStatus('".$order['id']."','".$order['status']."')\">
+                                            <option value=''>Order Status</option>
+                                            <option value='pending'>Pending</option>
+                                            <option value='completed'>Completed</option>
+                                        </select>";
+                            ?>
                     </td>
                 </tr>
             <?php } ?>
@@ -123,6 +129,18 @@
     function cancelOrder(orderId) {
         if (confirm("Are you sure you want to cancel this order?")) {
             window.location.href = `../pages/cancel_order.php?order_id=${orderId}`;
+        }
+    }
+    function updateOrderStatus(id,status) {
+        if (status !== '') {
+            let newStatus = event.target.value;
+            if (status !== newStatus) {
+                if (confirm(`Confirm updating order status from ${status} to ${newStatus}`)) {
+                    window.location.href = `../pages/update_orders_status.php?id=${id}&status=${newStatus}`;
+                } else {
+                    event.target.value = status;
+                }
+            }
         }
     }
 </script>

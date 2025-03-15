@@ -21,41 +21,33 @@
             <nav class="navigation-container" >
                 <div class="logo-section">
                     <h1 class="logo">MyShop</h1>
-                    <label>
-                        <input class="search-input" type="search" placeholder="Search" />
-                    </label>
+                    <?php echo "<p style='font-size: larger; font-weight: 900; color: #1d3045';>" .$_SESSION["user_type"]."</p>"?>
                 </div>
                 <ul class="navigation-options">
                     <li><a href="?page=dashboard.php">Dashboard</a></li>
-                    <li><a href="?page=cart.php">Basket</a></li>
-                    <li><a href="?page=all_orders.php">Orders</a></li>
                     <?php
-                        if ($_SESSION["user_type"] == "admin") {
-                            echo '<li><a href="?page=product.php">Products</a></li>';
+                        if ($_SESSION["user_type"] !== "admin") {
+                            echo '<li><a href="?page=cart.php">Basket</a></li>';
                         }
                     ?>
+                    <li><a href="?page=all_orders.php">Orders</a></li>
                 </ul>
                 <div class="header-section">
-                    <div>
-                        <a href="../layout/main.php"><img src="../assets/images/basket-shopping-solid.svg" alt="basket" height="24" width="24" ></a>
-                    </div>
                     <div class="dropdown">
                         <a class="user-icon" href="">
                             <img src="../assets/images/user-solid.svg" alt="user" height="24" width="24" />
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="menu-click-items" href="#">Profile</a></li>
-                            <li><a class="menu-click-items" href="#">Settings</a></li>
                             <li><a class="menu-click-items" onclick="logout()">Logout</a></li>
                         </ul>
                     </div>
                 </div>
             </nav>
-            <section class="main-page-dynamic-content">
+            <section style="height: 100px" class="main-page-dynamic-content">
                 <?php
                     $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard.php';
 
-                    $pages = ['dashboard.php', 'orders.php', 'product.php', 'cart.php', 'edit_product.php', 'delete_product.php', 'edit_cart.php', 'delete_cart.php', 'orders.php', 'order_summary.php', 'all_orders.php'];
+                    $pages = ['dashboard.php', 'orders.php', 'update_orders_status.php', 'cart.php', 'add_product.php', 'upload_image.php', 'edit_product.php', 'delete_product.php', 'edit_cart.php', 'delete_cart.php', 'orders.php', 'all_orders.php', 'checkout.php'];
 
                     if (in_array($page, $pages)) {
                         include '../pages/' . $page;
@@ -65,45 +57,14 @@
                 ?>
             </section>
             <footer>
-                    <div class="footer-container">
-                        <div class="footer-section">
-                            <h3>About Us</h3>
-                            <p>Your one-stop shop for the best products at great prices.</p>
-                        </div>
-                        <div class="footer-section">
-                            <h3>Quick Links</h3>
-                            <ul>
-                                <li><a href="../layout/main.php">Home</a></li>
-                                <li><a href="#">Shop</a></li>
-                                <li><a href="#">Contact</a></li>
-                                <li><a href="#">About</a></li>
-                            </ul>
-                        </div>
-                        <div class="footer-section">
-                            <h3>Follow Us</h3>
-                            <ul class="social-links">
-                                <li>
-                                    <a href="https://www.facebook.com" target="_blank">
-                                        <img src="../assets/images/facebook-brands.svg" alt="Facebook">
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="https://www.x.com" target="_blank">
-                                        <img src="../assets/images/x-twitter-brands.svg" alt="Twitter">
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="https://www.instagram.com" target="_blank">
-                                        <img src="../assets/images/instagram-brands.svg" alt="Instagram">
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
                     <div class="footer-bottom">
                         <p>&copy; <?php echo date("Y"); ?> E-Commerce Platform. All rights reserved.</p>
                     </div>
-                </footer>
-            <script rel="" src="../assets/js/main.js" ></script>
+            </footer>
+            <script>
+                function logout() {
+                    window.location.href = "../auth/login.php";
+                }
+            </script>
         </body>
     </html>

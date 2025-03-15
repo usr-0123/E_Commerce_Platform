@@ -55,7 +55,7 @@
     $stmt->execute();
 
     if ($stmt->affected_rows > 0) {
-        echo "<script>alert('Order successfully canceled'); window.location.href = '../layout/main.php?page=orders.php';</script>";
+        echo "<script>alert('Order successfully canceled'); window.location.href = '../layout/main.php?page=all_orders.php';</script>";
     } else {
         echo "<script>alert('Failed to cancel order'); window.history.back();</script>";
     }

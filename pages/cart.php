@@ -36,18 +36,23 @@
                 FROM cart c 
                 JOIN users u ON c.user_id = u.id 
                 JOIN products p ON c.product_id = p.id 
-                LEFT JOIN categories cat ON p.category_id = cat.id 
+                LEFT JOIN categories cat ON p.category_id = cat.id
+                where c.user_id = '{$user_id}'
                 ORDER BY c.added_at DESC
                 ";
 
     $basket = $connect->query($cart_sql);
 
-    //
+    $cart_total_sql = "SELECT SUM(p.price * c.quantity) AS total_cart_price FROM cart c JOIN products p ON c.product_id = p.id where c.user_id = '{$user_id}'";
+
+    $result = $connect->query($cart_total_sql);
+    $res = $result->fetch_assoc();
+    $total_cart_price = $res['total_cart_price'];
 ?>
 
 <section>
     <h2>Cart Items</h2>
-    <div style="width: 90%; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); overflow-x: auto;">
+    <div style="display:flex; flex-direction: column; align-items: center; gap: 10px; width: 90%; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); overflow-x: auto;">
         <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
             <thead>
             <tr style="background-color: #3498db; color: white;">
@@ -79,7 +84,6 @@
                             <td style='padding: 12px; font-weight: bold; color: #27ae60;'>Ksh. {$row['total_price']}</td>
                             <td style='padding: 12px; display: flex; justify-content: center; gap: 10px;'>
                                 <button onclick='deleteCartItem({$row['cart_id']})' style='background: #e74c3c; color: white; padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer;'>Delete</button>
-                                <button onclick='checkout({$row['cart_id']})' style='background: #2ecc71; color: white; padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer;'>CheckOut</button>
                             </td>
                           </tr>";
                 }
@@ -90,6 +94,14 @@
             ?>
             </tbody>
         </table>
+        <?php
+        if ($basket->num_rows > 0) {
+            echo "<button
+                    onclick='checkout()'
+                    style='width: 10%; background: #2ecc71; color: white; padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer;'
+                >CheckOut Ksh." .number_format($total_cart_price,2)."</button>";
+            }
+        ?>
     </div>
 </section>
 
@@ -99,8 +111,8 @@
         window.location.href = `../layout/main.php?page=edit_cart.php&id=${cartId}&change=${change}`;
     }
 
-    function checkout(cartId) {
-        window.location.href = `../layout/main.php?page=orders.php&id=${cartId}`;
+    function checkout() {
+        window.location.href = `../layout/main.php?page=checkout.php`;
     }
 
     function deleteCartItem(cartId) {
