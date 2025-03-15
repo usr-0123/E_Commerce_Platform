@@ -56,11 +56,6 @@
                     }
                 ?>
             </section>
-            <footer>
-                    <div class="footer-bottom">
-                        <p>&copy; <?php echo date("Y"); ?> E-Commerce Platform. All rights reserved.</p>
-                    </div>
-            </footer>
             <script>
                 function logout() {
                     window.location.href = "../auth/login.php";
