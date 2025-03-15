@@ -140,19 +140,21 @@
             while ($item = $result->fetch_assoc()) {
                 echo "
                     <div style='background: white; padding: 10px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: transform 0.2s; width: 20%;'>
-                        <img src='{$item['image_url']}' alt='{$item['name']}' style='width: 100%; height: 50%; border-radius: 10px'>
+                        <img src='{$item['image_url']}' alt='{$item['name']}' style='width: 100%; max-height: 40%; border-radius: 10px'>
                         <div class='product-info' style='padding: 10px 0;height: 50%;bottom: 0'>
                             <h2>{$item['name']}</h2>
                             <p class='description'>{$item['description']}</p>
                             <p class='price' style='font-size: 1.2em; font-weight: bold; color: #e67e22'>Ksh. {$item['price']}</p>
                             <p class='stock'>In Stock: <span>{$item['in_stock']}</span></p>
-                            <p class='rating'>⭐ {$item['rating']}/10</p>
-                            <button onclick='addToCart({$item['id']}, {$user_id})' class='cart-btn' style='background: #3498db; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; width: 100%;'>Add to Cart</button>";
-                            if ($_SESSION["user_type"] == "admin") {
+                            <p class='rating'>⭐ {$item['rating']}/10</p>";
+
+                            if (($_SESSION["user_type"] ?? '') == "admin") {
                                 echo "<div style='display:flex; justify-content: space-evenly;'>
-                                        <button onclick='navigate({$item['id']})' class='cart-btn' style='background: #3498db; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; width: 45%; margin-top: 10px;'>Edit</button>
-                                        <button onclick='deleteProduct({$item['id']})' class='cart-btn' style='background: #ff3322; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; width: 45%; margin-top: 10px;'>Delete</button>
-                                      </div>";
+                                                <button onclick='navigate(\"{$item['id']}\")' class='cart-btn' style='background: #3498db; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; width: 45%; margin-top: 10px;'>Edit</button>
+                                                <button onclick='deleteProduct(\"{$item['id']}\")' class='cart-btn' style='background: #ff3322; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; width: 45%; margin-top: 10px;'>Delete</button>
+                                              </div>";
+                            } else {
+                                echo "<button onclick='addToCart(\"{$item['id']}\", \"$user_id\")' class='cart-btn' style='background: #3498db; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; width: 100%;'>Add to Cart</button>";
                             }
                 echo "</div></div>";
             }
